@@ -11,11 +11,6 @@ struct EncounterView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
-                if let detail = controller.detail {
-                    profile(for: detail)
-                    overview(for: detail)
-                }
-
                 gamePicker
                 encounterContent
             }
@@ -25,53 +20,6 @@ struct EncounterView: View {
         .navigationTitle("Encounters")
         .navigationBarTitleDisplayMode(.inline)
         .task { await controller.load() }
-    }
-
-    // MARK: - Header
-
-    private func profile(for detail: PokemonDetail) -> some View {
-        VStack(spacing: 10) {
-            SpriteImage(url: detail.sprites.frontDefault, size: 120)
-                .background(Color(.secondarySystemBackground), in: Circle())
-
-            VStack(spacing: 4) {
-                Text(detail.displayName)
-                    .font(.title2.bold())
-                Text(detail.subtitle)
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-            }
-
-            HStack(spacing: 8) {
-                ForEach(detail.types, id: \.self) { type in
-                    TypeChip(type: type, size: .small)
-                }
-            }
-        }
-        .frame(maxWidth: .infinity)
-        .padding(.top, 8)
-    }
-
-    private func overview(for detail: PokemonDetail) -> some View {
-        EncounterCard(title: "Overview") {
-            HStack {
-                Text("Height")
-                Spacer()
-                Text(detail.heightLabel).foregroundStyle(.secondary)
-            }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 12)
-
-            Divider().padding(.leading, 16)
-
-            HStack {
-                Text("Weight")
-                Spacer()
-                Text(detail.weightLabel).foregroundStyle(.secondary)
-            }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 12)
-        }
     }
 
     // actually a Menu instead of a Picker cause a Picker can't disable individual options
