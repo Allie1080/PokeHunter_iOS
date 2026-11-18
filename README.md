@@ -1,0 +1,1 @@
+This codebase depends on PokeAPI and GRDB
